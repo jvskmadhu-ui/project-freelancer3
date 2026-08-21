@@ -31,14 +31,20 @@ export const AuthProvider = ({ children }) => {
     initAuth();
   }, []);
 
-  const login = async (email, password) => {
+  const login = async (identifier, password, rememberMe = false) => {
     try {
-      const res = await api.post('/auth/login', { email, password });
+      const res = await api.post('/auth/login', {
+        email: identifier,
+        identifier: identifier,
+        password: password,
+        rememberMe: rememberMe
+      });
       if (res.data?.success && res.data?.data) {
         const data = res.data.data;
         const authUser = {
           id: data.userId,
           email: data.email,
+          phone: data.phone,
           fullName: data.fullName,
           role: data.role,
           avatarUrl: data.avatarUrl,
@@ -55,7 +61,10 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (err) {
       // Mock login fallback if backend isn't ready
-      const matched = mockUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
+      const matched = mockUsers.find(u => 
+        (u.email && u.email.toLowerCase() === identifier.toLowerCase()) ||
+        (u.phone && u.phone === identifier)
+      );
       if (matched) {
         setUser(matched);
         setToken('mock-jwt-' + matched.role.toLowerCase());

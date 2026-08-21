@@ -16,6 +16,7 @@ import FreelancerRegisterPage from './pages/auth/FreelancerRegisterPage';
 import OtpVerificationPage from './pages/auth/OtpVerificationPage';
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 import ResetPasswordPage from './pages/auth/ResetPasswordPage';
+import AccountRecoveryPage from './pages/auth/AccountRecoveryPage';
 import IdentityVerificationPage from './pages/verification/IdentityVerificationPage';
 import ClientDashboard from './pages/dashboard/ClientDashboard';
 import FreelancerDashboard from './pages/dashboard/FreelancerDashboard';
@@ -54,6 +55,7 @@ function App() {
           <Route path="/verification/otp" element={<OtpVerificationPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/account-recovery" element={<AccountRecoveryPage />} />
 
           {/* Identity Verification (8-Step KYC) */}
           <Route path="/verification" element={<IdentityVerificationPage />} />

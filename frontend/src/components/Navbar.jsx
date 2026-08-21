@@ -293,6 +293,14 @@ const Navbar = () => {
                         >
                           <AlertCircle className="w-4 h-4 text-rose-400" /> Dispute Center
                         </Link>
+
+                        <Link
+                          to="/settings"
+                          onClick={() => setProfileDropdownOpen(false)}
+                          className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-300 hover:text-white hover:bg-dark-700 rounded-lg transition"
+                        >
+                          <Shield className="w-4 h-4 text-primary-400" /> Settings & Security
+                        </Link>
                       </div>
 
                       <div className="pt-2 border-t border-white/10">

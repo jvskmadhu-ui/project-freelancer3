@@ -79,6 +79,27 @@ public class User {
     @JsonIgnore
     private LocalDateTime otpExpiry;
 
+    @Builder.Default
+    @Column(name = "failed_login_attempts", nullable = false)
+    private int failedLoginAttempts = 0;
+
+    @Column(name = "lockout_until")
+    private LocalDateTime lockoutUntil;
+
+    @Column(name = "password_changed_at")
+    private LocalDateTime passwordChangedAt;
+
+    @Builder.Default
+    @Column(name = "is_account_locked", nullable = false)
+    private boolean isAccountLocked = false;
+
+    @Column(name = "security_question", length = 200)
+    private String securityQuestion;
+
+    @JsonIgnore
+    @Column(name = "security_answer", length = 200)
+    private String securityAnswer;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -86,4 +107,12 @@ public class User {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public boolean isCurrentlyLocked() {
+        if (isAccountLocked) return true;
+        if (lockoutUntil != null && LocalDateTime.now().isBefore(lockoutUntil)) {
+            return true;
+        }
+        return false;
+    }
 }

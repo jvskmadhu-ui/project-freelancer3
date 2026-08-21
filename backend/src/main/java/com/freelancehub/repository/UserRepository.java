@@ -15,7 +15,13 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
+    Optional<User> findByPhone(String phone);
     boolean existsByEmail(String email);
+    boolean existsByPhone(String phone);
+
+    @Query("SELECT u FROM User u WHERE LOWER(u.email) = LOWER(:identifier) OR u.phone = :identifier")
+    Optional<User> findByEmailOrPhone(@Param("identifier") String identifier);
+
     List<User> findByRole(Role role);
     Page<User> findByRole(Role role, Pageable pageable);
 

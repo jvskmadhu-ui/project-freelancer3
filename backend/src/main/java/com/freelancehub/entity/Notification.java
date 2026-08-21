@@ -49,6 +49,7 @@ public class Notification {
 
     public enum NotificationType {
         SYSTEM,
+        SECURITY,
         REGISTRATION,
         VERIFICATION,
         NEW_PROPOSAL,

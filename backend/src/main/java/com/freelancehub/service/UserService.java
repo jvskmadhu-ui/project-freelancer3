@@ -1,5 +1,7 @@
 package com.freelancehub.service;
 
+import com.freelancehub.dto.AuthDTOs.ChangePasswordRequest;
+import com.freelancehub.dto.AuthDTOs.RecentLoginActivityDTO;
 import com.freelancehub.dto.UserDTOs.*;
 import com.freelancehub.entity.User;
 import com.freelancehub.exception.ResourceNotFoundException;
@@ -8,11 +10,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final AuthService authService;
 
     @Transactional(readOnly = true)
     public UserProfileDTO getUserProfile(Long userId) {
@@ -49,5 +54,22 @@ public class UserService {
 
         user = userRepository.save(user);
         return getUserProfile(user.getId());
+    }
+
+    @Transactional
+    public void changePassword(Long userId, ChangePasswordRequest request) {
+        authService.changePassword(userId, request);
+    }
+
+    @Transactional(readOnly = true)
+    public List<RecentLoginActivityDTO> getRecentLoginActivity(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+        return authService.getRecentLoginActivity(user);
+    }
+
+    @Transactional
+    public void logoutAllSessions(Long userId) {
+        authService.logoutAllSessions(userId);
     }
 }
